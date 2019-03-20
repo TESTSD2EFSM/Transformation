@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequencediagram:SequenceDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sequencediagram="http://www.example.org/sequencediagram" name="ATM">
+  <lifeLines name="User" start="true">
+    <abstractObject xsi:type="sequencediagram:Actor" name="User"/>
+  </lifeLines>
+  <lifeLines name="Atm">
+    <abstractObject xsi:type="sequencediagram:Object" name="Atm"/>
+  </lifeLines>
+  <lifeLines name="Bank">
+    <abstractObject xsi:type="sequencediagram:Object" name="Bank"/>
+  </lifeLines>
+  <fragments xsi:type="sequencediagram:CombinedFragment" name="validateCard" interactionOperator="loop">
+    <operands guard="cardOk = false">
+      <fragOpds xsi:type="sequencediagram:Message" name="insertCard" target="//@lifeLines.1" source="//@lifeLines.0">
+        <operation returnType="void">
+          <args argName="card" argType="String"/>
+        </operation>
+      </fragOpds>
+      <fragOpds xsi:type="sequencediagram:Message" name="validateCard" target="//@lifeLines.2" source="//@lifeLines.1">
+        <operation returnVariable="cardOk" returnType="boolean">
+          <args argName="card" argType="String"/>
+        </operation>
+      </fragOpds>
+      <fragOpds xsi:type="sequencediagram:Message" name="returnCardOk" type="re" target="//@lifeLines.1" source="//@lifeLines.2"/>
+    </operands>
+  </fragments>
+  <fragments xsi:type="sequencediagram:Message" name="requestPassword" type="si" target="//@lifeLines.0" source="//@lifeLines.1"/>
+  <fragments xsi:type="sequencediagram:CombinedFragment" name="validatePassword" interactionOperator="loop">
+    <operands guard="pswOk = false">
+      <fragOpds xsi:type="sequencediagram:Message" name="enterPassword" target="//@lifeLines.1" source="//@lifeLines.0">
+        <operation returnType="void">
+          <args argName="psw" argType="String"/>
+        </operation>
+      </fragOpds>
+      <fragOpds xsi:type="sequencediagram:Message" name="validatePassword" target="//@lifeLines.2" source="//@lifeLines.1">
+        <operation returnVariable="pswOk" returnType="boolean">
+          <args argName="psw" argType="String"/>
+        </operation>
+      </fragOpds>
+      <fragOpds xsi:type="sequencediagram:Message" name="returnPswOk" type="re" target="//@lifeLines.1" source="//@lifeLines.2"/>
+    </operands>
+  </fragments>
+  <fragments xsi:type="sequencediagram:Message" name="requestValue" type="si" target="//@lifeLines.0" source="//@lifeLines.1"/>
+  <fragments xsi:type="sequencediagram:Message" name="enterValue" target="//@lifeLines.1" source="//@lifeLines.0">
+    <operation returnType="void">
+      <args argName="value" argType="double"/>
+    </operation>
+  </fragments>
+  <fragments xsi:type="sequencediagram:Message" name="validateBalance" target="//@lifeLines.2" source="//@lifeLines.1">
+    <operation returnVariable="valueOk" returnType="boolean">
+      <args argName="value" argType="double"/>
+    </operation>
+  </fragments>
+  <fragments xsi:type="sequencediagram:Message" name="returnValueOk" type="re" target="//@lifeLines.1" source="//@lifeLines.2"/>
+  <fragments xsi:type="sequencediagram:CombinedFragment" name="validateBalance" interactionOperator="alt">
+    <operands guard="valueOk = true">
+      <fragOpds xsi:type="sequencediagram:Message" name="value" type="si" target="//@lifeLines.0" source="//@lifeLines.1"/>
+    </operands>
+    <operands guard="valueOk = false">
+      <fragOpds xsi:type="sequencediagram:Message" name="unavailableBalance" type="si" target="//@lifeLines.0" source="//@lifeLines.1"/>
+    </operands>
+  </fragments>
+  <fragments xsi:type="sequencediagram:Message" name="exit" type="si" target="//@lifeLines.1" source="//@lifeLines.0"/>
+  <fragments xsi:type="sequencediagram:Message" name="cardOut" type="si" target="//@lifeLines.0" source="//@lifeLines.1"/>
+</sequencediagram:SequenceDiagram>

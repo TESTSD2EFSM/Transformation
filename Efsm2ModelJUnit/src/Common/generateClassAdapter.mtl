@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module generateClassAdapter('http://www.example.org/efsm')]
+
+[template public generateClassAdapter(aEFSM : EFSM){sClass1: String = 'User';sClass2: String = 'Bank';}]
+
+[file (aEFSM.name+'Adapter.java', false, 'UTF-8')]
+public class [aEFSM.name/]Adapter {	
+	private [sClass1/] [sClass1.toLowerFirst()/] = new [sClass1/]();
+	private [sClass2/] [sClass2.toLowerFirst()/] = new [sClass2/]();
+
+[for (obj:Transition|aEFSM.transitions)]
+  [if (obj.event <> '')]
+	public void [obj.input/]() {
+    [if obj.event.substring(1, 1) = 'v']
+		[sClass1.toLowerFirst()/].get[obj.event.substring(obj.event.lastIndex(' ')+1, obj.event.size()-1).toUpperFirst()/]();
+    [else]
+	 	return [sClass2.toLowerFirst()/].[obj.input/]([sClass1.toLowerFirst()/].get[obj.event.substring(obj.event.lastIndex(' ')+1, obj.event.size()-1).toUpperFirst()/]());
+    [/if]
+	}
+  [/if]
+[/for]
+}	
+[/file]
+[/template]

@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+gmf_dashboard/domainGenerationModel=platform\:/resource/sequencediagram/model/sequencediagram.genmodel
+gmf_dashboard/domainModel=platform\:/resource/sequencediagram/model/sequencediagram.ecore
+gmf_dashboard/generationModel=platform\:/resource/sequencediagram/sequencediagram.gmfgen
+gmf_dashboard/graphicalDefinitionModel=platform\:/resource/sequencediagram/model/sequencediagram.gmfgraph
+gmf_dashboard/mappingModel=platform\:/resource/sequencediagram/model/sequencediagram.gmfmap
+gmf_dashboard/option_rcp=*
+gmf_dashboard/toolingDefinitionModel=platform\:/resource/sequencediagram/model/sequencediagram.gmftool

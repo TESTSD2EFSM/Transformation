@@ -1,0 +1,295 @@
+-- @path MM=/sequencediagram/model/sequencediagram.ecore
+-- @path MM1=/efsm/model/efsm.ecore
+
+module SequenceDiagram2EFSM;
+create OUT : EFSM from IN : SequenceDiagram;
+
+helper def : preState  : EFSM!AbstractState = 0;
+helper def : curState  : EFSM!AbstractState = 0;
+helper def : iniState  : EFSM!AbstractState = 0;
+helper def : order     : Integer = 0;
+helper def : firstOp   : Integer = 1;
+helper def : firstOpe  : Integer = 1;
+helper def : event     : String = '';
+helper def : args      : String = '';
+helper def : input     : String = '';
+helper def : output    : String = '';
+helper def : guard     : String = '';
+helper def : action    : String = '';
+helper def : source    : EFSM!AbstractState = 0;
+helper def : target    : EFSM!AbstractState = 0;
+helper def : cfState   : EFSM!AbstractState = 0;
+helper def : cfStatePre: EFSM!AbstractState = 0;
+helper def : cfStateCur: EFSM!AbstractState = 0;
+helper def : cfStateLas: EFSM!AbstractState = 0;
+
+rule SequenceDiagram2FSM {
+	from s  : SequenceDiagram!SequenceDiagram
+	to   e  : EFSM!EFSM
+	
+	do {
+		-- InitFsm
+		for (lfl in s.lifeLines -> select(lfl | lfl.start = true)) {
+			e.initialstate <- thisModule.LrInitialState(lfl);
+			e.name <- s.name;
+			thisModule.iniState <- e.initialstate;
+		}
+		-- Selection of fragments
+		for (fra in s.fragments) {
+			-- Messages
+        	if (fra.oclIsTypeOf(SequenceDiagram!Message)){
+        		if (fra.type.toString() = 'op'){
+        			-- Rule ContextVariable
+        			if (fra.operation.returnType <> 'void'){
+        				e.variables <- thisModule.LrContextVariable(fra.operation);
+        			}
+        			-- Rule Transition
+					thisModule.event <- fra.operation.returnType+' '+fra.name;
+        			thisModule.args <- '';
+        			for (a in fra.operation.args){
+        				if (thisModule.args = ''){
+        					thisModule.args <- '('+a.argType+' '+a.argName;
+        				}
+        				else{
+        					thisModule.args <- thisModule.args + ', '+a.argType+' '+a.argName;
+        				}
+        				thisModule.args <- thisModule.args + ')';
+        			}
+        			thisModule.event<-thisModule.event+thisModule.args;
+        			e.states <- thisModule.LrState(fra);
+        			thisModule.source <- thisModule.preState;
+        			thisModule.target <- thisModule.curState;
+        			thisModule.input <- fra.name;
+        			thisModule.output <- '';
+        			thisModule.guard <- '';
+        			thisModule.action <- '';
+		 			e.transitions <- thisModule.LrTransition(fra);
+        		}
+        		if (fra.type.toString() = 'si'){
+        			-- Rule Transition
+					thisModule.event <- '';
+        			e.states <- thisModule.LrState(fra);
+		 			thisModule.source <- thisModule.preState;
+		 			thisModule.target <- thisModule.curState;
+		 			thisModule.input <- fra.name;
+        			thisModule.output <- '';
+        			thisModule.guard <- '';
+        			thisModule.action <- '';
+		 			e.transitions <- thisModule.LrTransition(fra);
+		 			if (thisModule.cfStateLas <> 0){
+						thisModule.event <- '';
+		 				thisModule.source <- thisModule.cfStateLas;
+		 				thisModule.target <- thisModule.curState;
+		 				thisModule.input <- fra.name;
+        				thisModule.output <- '';
+        				thisModule.guard <- '';
+        				thisModule.action <- '';
+		 				e.transitions <- thisModule.LrTransition(fra);
+		 				thisModule.cfStateLas <- 0;
+		 			}
+        		}
+        	}
+			-- CombinedFragment
+			if (fra.oclIsTypeOf(SequenceDiagram!CombinedFragment)) {
+				-- rule loop
+				if (fra.interactionOperator.toString() = 'loop'){
+			 		thisModule.cfState <- thisModule.curState;
+			 		for (op in fra.operands){
+			 			for (msg in op.fragOpds -> select(msg | msg.oclIsTypeOf(SequenceDiagram!Message))){
+        					if (msg.type.toString() = 'op'){
+        						-- Rule ContextVariable
+        						if (msg.operation.returnType <> 'void'){
+        							e.variables <- thisModule.LrContextVariable(msg.operation);
+        						}
+        						-- Rule Transition
+								thisModule.event <- msg.operation.returnType+' '+msg.name;
+        						thisModule.args <- '';
+        						for (a in msg.operation.args){
+        							if (thisModule.args = ''){
+        								thisModule.args <- '('+a.argType+' '+a.argName;
+        							}
+        							else{
+        								thisModule.args <- thisModule.args + ', '+a.argType+' '+a.argName;
+        							}
+        							thisModule.args <- thisModule.args + ')';
+        						}
+        						thisModule.event<-thisModule.event+thisModule.args;
+        						e.states <- thisModule.LrState(msg);
+        						thisModule.source <- thisModule.preState;
+        						thisModule.target <- thisModule.curState;
+        						thisModule.input <- msg.name;
+        						thisModule.output <- '';
+        						thisModule.guard <- '';
+        						thisModule.action <- '';
+		 						e.transitions <- thisModule.LrTransition(msg);
+        					}
+        					if (msg.type.toString() = 'si'){
+        						-- Rule Transition
+								thisModule.event <- '';
+        						e.states <- thisModule.LrState(msg);
+        						thisModule.source <- thisModule.preState;
+        						thisModule.target <- thisModule.curState;
+        						thisModule.input <- msg.name;
+        						thisModule.output <- '';
+        						thisModule.guard <- '';
+        						thisModule.action <- '';
+		 						e.transitions <- thisModule.LrTransition(msg);
+        					}
+        					if (msg.type.toString() = 're'){
+        						for (tra in e.transitions -> select(tra | tra.target = thisModule.curState)) {
+        							if (op.guard.endsWith('false') = true){
+										tra.output <- op.guard.regexReplaceAll('false', 'true');
+										tra.guard <- op.guard.regexReplaceAll('false', 'true');
+										tra.action <- op.guard.regexReplaceAll('false', 'true');
+			    					}
+			    					if (op.guard.endsWith('true') = true){
+									 	tra.output <- op.guard.regexReplaceAll('true', 'false');
+									 	tra.guard <- op.guard.regexReplaceAll('true', 'false');
+										tra.action <- op.guard.regexReplaceAll('true', 'false');
+			    					}
+			    					
+			    				    -- Rule Transition
+									thisModule.event <- tra.event;
+        						    thisModule.source <- thisModule.preState;
+        						    thisModule.target <- thisModule.cfState;
+        						    thisModule.input <- tra.input;
+        						    thisModule.output <- op.guard;
+        						    thisModule.guard <- op.guard;
+        						    thisModule.action <- op.guard;
+		 						    e.transitions <- thisModule.LrTransition(msg);
+        						}        						
+        					}
+			 			}
+			 		}
+				}
+				-- Rule alt or role opt
+				if (fra.interactionOperator.toString() = 'alt' or fra.interactionOperator.toString() = 'opt'){
+			 		thisModule.firstOp <- 1;
+					thisModule.cfState <- thisModule.preState;
+			 		thisModule.cfStatePre <- thisModule.preState;
+			 		thisModule.cfStateCur <- thisModule.curState;
+			 		for (op in fra.operands){
+        				for (tra in e.transitions -> select(tra | tra.source = thisModule.cfStatePre and tra.target = thisModule.cfStateCur)){	
+        					if (thisModule.firstOp >= 1){
+								tra.output <- op.guard;
+								tra.guard <- op.guard;
+								tra.action <- op.guard;
+								thisModule.firstOp <- 0;
+							}
+							else{
+			    				-- Rule Transition
+								e.states <- thisModule.LrState();
+								thisModule.event <- tra.event;
+        						thisModule.source <- thisModule.cfState;
+        						thisModule.target <- thisModule.curState;
+        						thisModule.input <- tra.input;
+        						thisModule.output <- op.guard;
+        						thisModule.guard <- op.guard;
+        						thisModule.action <- op.guard;
+		 						e.transitions <- thisModule.LrTransition();
+							}
+        				}
+			 			for (msg in op.fragOpds -> select(msg | msg.oclIsTypeOf(SequenceDiagram!Message))){
+        					if (msg.type.toString() = 'op'){
+        						-- Rule ContextVariable
+        						if (msg.operation.returnType <> 'void'){
+        							e.variables <- thisModule.LrContextVariable(msg.operation);
+        						}
+        						-- Rule Transition
+								thisModule.event <- msg.operation.returnType+' '+msg.name;
+        						thisModule.args <- '';
+        						for (a in msg.operation.args){
+        							if (thisModule.args = ''){
+        								thisModule.args <- '('+a.argType+' '+a.argName;
+        							}
+        							else{
+        								thisModule.args <- thisModule.args + ', '+a.argType+' '+a.argName;
+        							}
+        							thisModule.args <- thisModule.args + ')';
+        						}
+        						thisModule.event<-thisModule.event+thisModule.args;
+        						e.states <- thisModule.LrState(msg);
+        						thisModule.source <- thisModule.preState;
+        						thisModule.target <- thisModule.curState;
+        						thisModule.input <- msg.name;
+        						thisModule.output <- '';
+        						thisModule.guard <- '';
+        						thisModule.action <- '';
+		 						e.transitions <- thisModule.LrTransition(msg);
+        					}
+        					if (msg.type.toString() = 'si'){
+        						-- Rule Transition
+								thisModule.event <- '';
+        						e.states <- thisModule.LrState(msg);
+        						thisModule.source <- thisModule.preState;
+        						thisModule.target <- thisModule.curState;
+        						thisModule.input <- msg.name;
+        						thisModule.output <- '';
+        						thisModule.guard <- '';
+        						thisModule.action <- '';
+		 						e.transitions <- thisModule.LrTransition(msg);
+        					}
+			 			}
+			 			if (thisModule.firstOpe >= 1){
+			 				thisModule.cfStateLas <- thisModule.curState;
+			 				thisModule.firstOpe <- 0;
+			 			}
+			 		}
+				}
+			}
+        }
+	}
+}
+	
+lazy rule LrInitialState {
+	from
+		l : SequenceDiagram!LifeLine
+	to  
+		i : EFSM!InitialState(name <- 'S0')
+	do {
+		thisModule.order <- thisModule.order + 1;
+		thisModule.nameLfL <- l.name;
+		thisModule.preState <- i;
+		thisModule.curState <- i;
+	}
+}
+
+lazy rule LrContextVariable {
+	from
+		o : SequenceDiagram!Operation
+	to  
+		v : EFSM!ContextVariable(
+			name <- o.returnVariable,
+			type <- o.returnType
+		)
+}
+
+lazy rule LrState {
+	from
+		m : SequenceDiagram!Message
+	to  
+		i : EFSM!State(
+			name <- 'S'+thisModule.order.toString()
+		)
+	do{
+		thisModule.order <- thisModule.order + 1;
+		thisModule.preState <- thisModule.curState;
+		thisModule.curState <- i;
+	}
+}
+
+lazy rule LrTransition {
+	from
+		m : SequenceDiagram!Message
+	to  
+		t : EFSM!Transition(
+			input <- thisModule.input,
+			output <- thisModule.output,
+			source <- thisModule.source,
+			target <- thisModule.target,
+			name <- thisModule.source.name+'->'+thisModule.target.name,
+			event <- thisModule.event,
+			guard <- thisModule.guard,
+			action <- thisModule.action
+		)
+}

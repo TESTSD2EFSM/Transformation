@@ -1,0 +1,15 @@
+[comment encoding = UTF-8 /]
+[module generate('http://www.example.org/efsm')]
+
+[import Common::generateClassModel /]
+[import Common::generateClassAdapter /]
+[import Common::generateClassTest /]
+[import Common::generateClassJUnit /]
+
+[template public generate(aEFSM : EFSM)]
+[comment @main/]
+	[aEFSM.generateClassModel()/]
+	[aEFSM.generateClassAdapter()/]
+	[aEFSM.generateClassTest()/]
+	[aEFSM.generateClassJUnit()/]
+[/template]

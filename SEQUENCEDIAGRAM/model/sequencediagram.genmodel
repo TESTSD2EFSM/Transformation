@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/sequencediagram/src" modelPluginID="sequencediagram"
+    modelName="Sequencediagram" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>sequencediagram.ecore</foreignModel>
+  <genPackages prefix="Sequencediagram" basePackage="Sequencediagram" disposableProviderFactory="true"
+      ecorePackage="sequencediagram.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sequencediagram.ecore#//MessageKind">
+      <genEnumLiterals ecoreEnumLiteral="sequencediagram.ecore#//MessageKind/operation"/>
+      <genEnumLiterals ecoreEnumLiteral="sequencediagram.ecore#//MessageKind/signal"/>
+      <genEnumLiterals ecoreEnumLiteral="sequencediagram.ecore#//MessageKind/reply"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sequencediagram.ecore#//OperatorKind">
+      <genEnumLiterals ecoreEnumLiteral="sequencediagram.ecore#//OperatorKind/opt"/>
+      <genEnumLiterals ecoreEnumLiteral="sequencediagram.ecore#//OperatorKind/alt"/>
+      <genEnumLiterals ecoreEnumLiteral="sequencediagram.ecore#//OperatorKind/loop"/>
+    </genEnums>
+    <genClasses ecoreClass="sequencediagram.ecore#//SequenceDiagram">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//SequenceDiagram/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//SequenceDiagram/lifeLines"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//SequenceDiagram/fragments"/>
+    </genClasses>
+    <genClasses ecoreClass="sequencediagram.ecore#//LifeLine">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//LifeLine/abstractObject"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//LifeLine/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//LifeLine/start"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sequencediagram.ecore#//AbstractObject">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//AbstractObject/name"/>
+    </genClasses>
+    <genClasses ecoreClass="sequencediagram.ecore#//Actor"/>
+    <genClasses ecoreClass="sequencediagram.ecore#//Object"/>
+    <genClasses ecoreClass="sequencediagram.ecore#//Message">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//Message/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//Message/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//Message/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//Message/source"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//Message/operation"/>
+    </genClasses>
+    <genClasses ecoreClass="sequencediagram.ecore#//InteractionOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//InteractionOperand/guard"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//InteractionOperand/fragOpds"/>
+    </genClasses>
+    <genClasses ecoreClass="sequencediagram.ecore#//CombinedFragment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//CombinedFragment/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//CombinedFragment/interactionOperator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//CombinedFragment/operands"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sequencediagram.ecore#//InteractionFragment"/>
+    <genClasses ecoreClass="sequencediagram.ecore#//Operation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//Operation/returnVariable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//Operation/returnType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sequencediagram.ecore#//Operation/args"/>
+    </genClasses>
+    <genClasses ecoreClass="sequencediagram.ecore#//Param">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//Param/argName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sequencediagram.ecore#//Param/argType"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

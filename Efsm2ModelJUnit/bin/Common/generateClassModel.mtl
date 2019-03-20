@@ -1,0 +1,39 @@
+[comment encoding = UTF-8 /]
+[module generateClassModel('http://www.example.org/efsm')]
+
+
+[template public generateClassModel(aEFSM : EFSM)]
+
+[file (aEFSM.name+'Model.java', false, 'UTF-8')]
+import nz.ac.waikato.modeljunit.Action;
+import nz.ac.waikato.modeljunit.FsmModel;
+
+public class [aEFSM.name+'Model implements FsmModel'/] {
+	private [aEFSM.name+'Adpter adapter = new '+aEFSM.name+'Adpter()'/];
+
+    [for (obj:ContextVariable|aEFSM.variables)]
+	private [obj.type/] [obj.name/];[lineSeparator()/][/for]
+		
+	private enum State{[aEFSM.initialstate.name/], [for (obj:State|aEFSM.states)][if (obj = aEFSM.states->last())][obj.name/][else][obj.name/], [/if][/for]}
+	private State state = State.[aEFSM.initialstate.name/];
+
+	public Object getState() {
+		return state;
+	}
+
+	public void reset(boolean arg0) {
+		state = State.[aEFSM.initialstate.name/];
+	}
+
+    [for (obj:Transition|aEFSM.transitions)]
+	@action
+	public void [obj.input/]() {
+		if (state == State.[obj.source.name/]) {
+			adapter.[obj.input/]();
+		}
+	}
+	[/for]
+
+}
+[/file]
+[/template]
