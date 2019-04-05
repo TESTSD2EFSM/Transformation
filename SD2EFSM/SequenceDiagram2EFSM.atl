@@ -44,7 +44,7 @@ rule SequenceDiagram2FSM {
         				e.variables <- thisModule.LrContextVariable(fra.operation);
         			}
         			-- Rule Transition
-					thisModule.event <- fra.operation.returnType+' '+fra.name;
+					thisModule.event <- fra.operation.returnType+' '+fra.target.name.toString()+'.'+fra.name;
         			thisModule.args <- '';
         			for (a in fra.operation.args){
         				if (thisModule.args = ''){
@@ -102,7 +102,7 @@ rule SequenceDiagram2FSM {
         							e.variables <- thisModule.LrContextVariable(msg.operation);
         						}
         						-- Rule Transition
-								thisModule.event <- msg.operation.returnType+' '+msg.name;
+								thisModule.event <- msg.operation.returnType+' '+msg.target.name.toString()+'.'+msg.name;
         						thisModule.args <- '';
         						for (a in msg.operation.args){
         							if (thisModule.args = ''){
@@ -196,7 +196,7 @@ rule SequenceDiagram2FSM {
         							e.variables <- thisModule.LrContextVariable(msg.operation);
         						}
         						-- Rule Transition
-								thisModule.event <- msg.operation.returnType+' '+msg.name;
+								thisModule.event <- msg.operation.returnType+' '+msg.target.name.toString()+'.'+msg.name;
         						thisModule.args <- '';
         						for (a in msg.operation.args){
         							if (thisModule.args = ''){

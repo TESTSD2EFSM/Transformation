@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <efsm:EFSM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:efsm="http://www.example.org/efsm" name="ATM">
-  <transitions name="S0->S1" input="insertCard" output="" source="//@initialstate" target="//@states.0" event="void insertCard(String card)" guard="" action=""/>
-  <transitions name="S1->S2" input="validateCard" output="cardOk = true" source="//@states.0" target="//@states.1" event="boolean validateCard(String card)" guard="cardOk = true" action="cardOk = true"/>
-  <transitions name="S1->S0" input="validateCard" output="cardOk = false" source="//@states.0" target="//@initialstate" event="boolean validateCard(String card)" guard="cardOk = false" action="cardOk = false"/>
+  <transitions name="S0->S1" input="insertCard" output="" source="//@initialstate" target="//@states.0" event="void Atm.insertCard(String card)" guard="" action=""/>
+  <transitions name="S1->S2" input="validateCard" output="cardOk = true" source="//@states.0" target="//@states.1" event="boolean Bank.validateCard(String card)" guard="cardOk = true" action="cardOk = true"/>
+  <transitions name="S1->S0" input="validateCard" output="cardOk = false" source="//@states.0" target="//@initialstate" event="boolean Bank.validateCard(String card)" guard="cardOk = false" action="cardOk = false"/>
   <transitions name="S2->S3" input="requestPassword" output="" source="//@states.1" target="//@states.2" event="" guard="" action=""/>
-  <transitions name="S3->S4" input="enterPassword" output="" source="//@states.2" target="//@states.3" event="void enterPassword(String psw)" guard="" action=""/>
-  <transitions name="S4->S5" input="validatePassword" output="pswOk = true" source="//@states.3" target="//@states.4" event="boolean validatePassword(String psw)" guard="pswOk = true" action="pswOk = true"/>
-  <transitions name="S4->S3" input="validatePassword" output="pswOk = false" source="//@states.3" target="//@states.2" event="boolean validatePassword(String psw)" guard="pswOk = false" action="pswOk = false"/>
+  <transitions name="S3->S4" input="enterPassword" output="" source="//@states.2" target="//@states.3" event="void Atm.enterPassword(String psw)" guard="" action=""/>
+  <transitions name="S4->S5" input="validatePassword" output="pswOk = true" source="//@states.3" target="//@states.4" event="boolean Bank.validatePassword(String psw)" guard="pswOk = true" action="pswOk = true"/>
+  <transitions name="S4->S3" input="validatePassword" output="pswOk = false" source="//@states.3" target="//@states.2" event="boolean Bank.validatePassword(String psw)" guard="pswOk = false" action="pswOk = false"/>
   <transitions name="S5->S6" input="requestValue" output="" source="//@states.4" target="//@states.5" event="" guard="" action=""/>
-  <transitions name="S6->S7" input="enterValue" output="" source="//@states.5" target="//@states.6" event="void enterValue(double value)" guard="" action=""/>
-  <transitions name="S7->S8" input="validateBalance" output="valueOk = true" source="//@states.6" target="//@states.7" event="boolean validateBalance(double value)" guard="valueOk = true" action="valueOk = true"/>
+  <transitions name="S6->S7" input="enterValue" output="" source="//@states.5" target="//@states.6" event="void Atm.enterValue(double value)" guard="" action=""/>
+  <transitions name="S7->S8" input="validateBalance" output="valueOk = true" source="//@states.6" target="//@states.7" event="boolean Bank.validateBalance(double value)" guard="valueOk = true" action="valueOk = true"/>
   <transitions name="S8->S9" input="value" output="" source="//@states.7" target="//@states.8" event="" guard="" action=""/>
-  <transitions name="S7->S10" input="validateBalance" output="valueOk = false" source="//@states.6" target="//@states.9" event="boolean validateBalance(double value)" guard="valueOk = false" action="valueOk = false"/>
+  <transitions name="S7->S10" input="validateBalance" output="valueOk = false" source="//@states.6" target="//@states.9" event="boolean Bank.validateBalance(double value)" guard="valueOk = false" action="valueOk = false"/>
   <transitions name="S10->S11" input="unavailableBalance" output="" source="//@states.9" target="//@states.10" event="" guard="" action=""/>
   <transitions name="S11->S12" input="exit" output="" source="//@states.10" target="//@states.11" event="" guard="" action=""/>
   <transitions name="S9->S12" input="exit" output="" source="//@states.8" target="//@states.11" event="" guard="" action=""/>
