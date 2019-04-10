@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module generateClassJUnit('http://www.example.org/efsm')]
 
-[template public generateClassJUnit(aEFSM : EFSM){sClass: String = 'Bank'; sCard: String = '111'; sPsw: String = '123'; iBalance: Integer = 100}]
+[template public generateClassJUnit(aEFSM : EFSM){sCard: String = '111'; sPsw: String = '123'; iBalance: Integer = 100}]
 
 [file (aEFSM.name+'JUnit.java', false, 'UTF-8')]
 import static org.junit.Assert.*;
@@ -16,14 +16,14 @@ public class [aEFSM.name/]JUnit {
     [if obj.action.strstr('true') = true]
 	@Test
 	public void test[obj.input/]01() {
-		[sClass/] [sClass.toLowerFirst()/] = new [sClass/]();
-		boolean output = [sClass.toLowerFirst()/].[obj.input/]("[sCard/]");
+		[obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/] [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/] = new [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/]();
+		boolean output = [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/].[obj.input/]("[sCard/]");
 		assertTrue(output);
     [else]
 	@Test
 	public void test[obj.input/]()02 {
-		[sClass/] [sClass.toLowerFirst()/] = new [sClass/]();
-		boolean output = [sClass.toLowerFirst()/].[obj.input/]("[sCard.toInteger()*2/]");
+		[obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/] [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/] = new [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/]();
+		boolean output = [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/].[obj.input/]("[sCard.toInteger()*2/]");
 	  	assertFalse(output);
 	[/if]
   [else]
@@ -31,14 +31,14 @@ public class [aEFSM.name/]JUnit {
       [if obj.action.strstr('true') = true]
 	@Test
 	public void test[obj.input/]01() {
-		[sClass/] [sClass.toLowerFirst()/] = new [sClass/]();
-		boolean output = [sClass.toLowerFirst()/].[obj.input/]("[sPsw/]");
+		[obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/] [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/] = new [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/]();
+		boolean output = [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/].[obj.input/]("[sPsw/]");
 		assertTrue(output);
       [else]
 	@Test
 	public void test[obj.input/]02() {
-		[sClass/] [sClass.toLowerFirst()/] = new [sClass/]();
-		boolean output = [sClass.toLowerFirst()/].[obj.input/]("[sPsw.toInteger()*2/]");
+		[obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/] [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/] = new [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/]();
+		boolean output = [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/].[obj.input/]("[sPsw.toInteger()*2/]");
 	  	assertFalse(output);
 	  [/if]
     [else]
@@ -46,14 +46,14 @@ public class [aEFSM.name/]JUnit {
         [if obj.action.strstr('true') = true]
 	@Test
 	public void test[obj.input/]01() {
-		[sClass/] [sClass.toLowerFirst()/] = new [sClass/]();
-		boolean output = [sClass.toLowerFirst()/].[obj.input/]([iBalance/2/]f);
+		[obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/] [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/] = new [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/]();
+		boolean output = [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/].[obj.input/]([iBalance/2/]f);
 		assertTrue(output);
         [else]
 	@Test
 	public void test[obj.input/]02() {
-		[sClass/] [sClass.toLowerFirst()/] = new [sClass/]();
-		boolean output = [sClass.toLowerFirst()/].[obj.input/]([iBalance*2/]f);
+		[obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/] [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/] = new [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1)/]();
+		boolean output = [obj.event.substring(obj.event.index(' ')+1, obj.event.index('.')-1).toLowerFirst()/].[obj.input/]([iBalance*2/]f);
 	  	assertFalse(output);
 	    [/if]
       [/if]
